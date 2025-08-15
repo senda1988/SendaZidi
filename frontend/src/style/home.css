@@ -1,0 +1,124 @@
+/* Fond général gris clair */
+body {
+    background-color: #ECECEC;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Section pleine hauteur */
+.home-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    /* prend toute la hauteur de l'écran */
+    padding: 4rem 2rem;
+    background: #ECECEC;
+    /* fond gris clair */
+    position: relative;
+}
+
+/* Container */
+.home-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1100px;
+    gap: 3rem;
+    margin: 0 auto;
+}
+
+/* Bloc image */
+.home-image-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+.home-image-shape {
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    width: 100%;
+    height: 100%;
+    background-color: #C6DCF1;
+    /* couleur derrière la photo */
+    border-radius: 20px;
+    transform: rotate(-5deg);
+    z-index: -1;
+}
+
+.home-image {
+    width: 350px;
+    max-width: 100%;
+    border-radius: 20px;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+}
+
+/* Bloc texte */
+.home-text {
+    max-width: 500px;
+    color: #6B6B6B;
+}
+
+.home-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #D9553B;
+    margin-bottom: 0.5rem;
+}
+
+.home-subtitle {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #6B6B6B;
+    margin-bottom: 1rem;
+}
+
+.home-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #6B6B6B;
+    margin-bottom: 2rem;
+}
+
+/* Bouton */
+.home-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background-color: #C6DCF1;
+    /* couleur du bouton */
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: #a3c7e3;
+    /* couleur légèrement plus foncée au hover */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .home-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .home-image-shape {
+        top: -20px;
+        left: -20px;
+        width: 100px;
+        height: 110%;
+    }
+
+    .home-image {
+        width: 250px;
+    }
+}

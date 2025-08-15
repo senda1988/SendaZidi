@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "title": "FitnessAPI",
+        "description": "API for workouts ",
+        "tech": [
+            "Backend: Node.js , Express.js",
+            "Frontend: HTML, CSS, Javescript",
+            "Database: Json Datei"
+        ],
+        "image": "",
+        "link": "https://github.com/JoshuaTechstarter/FitnessAPI"
+    },
+    {
+        "id": 2,
+        "title": "Budget_Ausgaben_app",
+        "description": "Budget Ausgaben App",
+        "tech": [
+            "Frontend: React + Shadcn/ui",
+            "Backend : Node.js +Express",
+            "Database: postgreSQL"
+        ],
+        "image": "",
+        "link": "https://github.com/Fazsuzsa/Budget_Ausgaben_App"
+    }
+]
