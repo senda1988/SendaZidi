@@ -4,23 +4,35 @@
     align-items: center;
     gap: 2rem;
     padding: 1rem 2rem;
-    background-color: white;
-    border-radius: 50px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
-    max-width: 900px;
-    margin: 2rem auto;
+
+    background: #0a0a0a;
+    backdrop-filter: blur(10px);
+
+
+    box-shadow: 0px 4px 20px rgba(0, 234, 255, 0.2);
+
+
 }
 
+/* Liens */
 .menu-link {
     text-decoration: none;
-    color: #333;
+    color: #ddd;
     font-weight: 500;
     padding: 8px 16px;
     border-radius: 8px;
     transition: all 0.3s ease;
 }
 
+/* Hover */
 .menu-link:hover {
-    background-color: #C3DAF0;
-    color: white;
+    color: #00eaff;
+    text-shadow: 0px 0px 8px rgba(0, 234, 255, 0.8);
+}
+
+/* Page active */
+.menu-link.active {
+    color: #00eaff;
+    font-weight: 600;
+    text-shadow: 0px 0px 10px rgba(0, 234, 255, 0.9);
 }
