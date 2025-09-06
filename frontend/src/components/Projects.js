@@ -17,7 +17,7 @@ export default function Projects() {
         <section style={{ padding: '2rem' }}>
             <Grid container spacing={4}>
                 {projects.map(project => (
-                    <Grid item key={project.id} xs={12} sm={6} md={4}>
+                    <Grid item key={project.id} xs={12} sm={6} md={4} >
                         <ProjectCard project={project} />
                     </Grid>
                 ))}

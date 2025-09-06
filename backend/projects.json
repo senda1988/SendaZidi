@@ -8,7 +8,7 @@
             "Frontend: HTML, CSS, Javescript",
             "Database: Json Datei"
         ],
-        "image": "",
+        "image": "/images/porfolio_senda.png",
         "link": "https://github.com/JoshuaTechstarter/FitnessAPI"
     },
     {
@@ -20,7 +20,19 @@
             "Backend : Node.js +Express",
             "Database: postgreSQL"
         ],
-        "image": "",
+        "image": "/images/porfolio_senda.png",
         "link": "https://github.com/Fazsuzsa/Budget_Ausgaben_App"
+    },
+    {
+        "id": 3,
+        "title": "Portfolio",
+        "description": "Portfolio personnel",
+        "tech": [
+            "Frontend: React + Shadcn/ui",
+            "Backend : Node.js +Express",
+            "Database: Json Datei"
+        ],
+        "image": "/images/porfolio_senda.png",
+        "link": "https://github.com/senda1988/SendaZidi"
     }
 ]

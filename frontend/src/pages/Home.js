@@ -2,69 +2,103 @@ import React from 'react';
 import '../style/home.css';
 import AccountMenu from '../components/AccountMenu';
 import cvSenda from '../images/cvSenda.png';
-import { FaGithub, FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
+
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import EmailIcon from "@mui/icons-material/Email";
+
 import Projects from '../components/Projects';
 import Badges from '../components/Badges';
+import Skills from "../components/Skills";
+import Contact from "../components/Contact";
+import Footer from '../components/Footer';
+
 
 export default function Home() {
     return (
         <>
+
+
             <AccountMenu />
 
-            {/* Section principale */}
+            {/* Main Section */}
+
             <section className="home-section">
                 <div className="home-container">
 
-                    {/* Texte */}
                     <div className="home-text">
-                        <p className="intro-small">Hi, Myself</p>
-                        <h1 className="intro-title">Senda</h1>
+                        <p className="intro-small">Hallo, ich bin</p>
+                        <h1 className="intro-title">Senda Zidi</h1>
                         <h2 className="intro-subtitle">
-                            And I'm a <span className="highlight">Frontend Developer</span>
+                            <span style={{ color: '#fff', fontWeight: '200' }} >Und ich bin</span> <span className="highlight">junior Cloud engineer</span>
                         </h2>
                         <p className="intro-desc">
-                            Passionate about creating beautiful, responsive websites and
-                            exceptional user experiences. Specialized in modern web
-                            technologies including React, Vue.js, and advanced CSS frameworks.
+                            I support the design and automation of cloud infrastructures and CI/CD pipelines to deliver efficient, scalable, and reliable applications.
                         </p>
 
-                        {/* Icônes réseaux */}
                         <div className="social-icons">
-                            <a href="#"><FaFacebook /></a>
-                            <a href="#"><FaInstagram /></a>
-                            <a href="#"><FaLinkedin /></a>
-                            <a href="#"><FaGithub /></a>
+                            <a href="https://www.linkedin.com/in/senda-zidi-71ba1223/" target="_blank" rel="noopener noreferrer">
+                                <LinkedInIcon sx={{ fontSize: 40 }} />
+                            </a>
+                            <a href="https://github.com/senda1988" target="_blank" rel="noopener noreferrer">
+                                <GitHubIcon sx={{ fontSize: 40 }} />
+                            </a>
+                            <a href="mailto:zidi.senda@gmail.com" target="_blank" rel="noopener noreferrer">
+                                <EmailIcon sx={{ fontSize: 40 }} />
+                            </a>
                         </div>
 
-                        <button className="contact-btn">READ MORE</button>
+                        <a href="/cv.pdf" download="../data/Mon_CV.pdf" className="contact-btn">
+                            CV Download
+                        </a>
                     </div>
 
-                    {/* Image */}
                     <div className="home-image-wrapper">
-                        <img src={cvSenda} alt="Senda" className="home-image" />
+                        <div className="circle-frame">
+                            <img src={cvSenda} alt="Senda" className="home-image" />
+                        </div>
                     </div>
                 </div>
             </section>
-            {/* ---------------- Projects Section ---------------- */}
-            <Projects />
 
-            {/* ---------------- Badges/Certificats Section ---------------- */}
-            <Badges />
+            <div className="section-divider"></div>
+            {/* Badges */}
+            <section id="badges" className="badges-section">
 
-            {/* ---------------- Contact Section ---------------- */}
-            <section className="contact-section" style={{ padding: '4rem 2rem', backgroundColor: '#F9FAFB' }}>
-                <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '2rem', color: '#1E40AF', marginBottom: '2rem' }}>Contactez-moi</h2>
-                    <form className="contact-form" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <input type="text" placeholder="Nom" required style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #ccc' }} />
-                        <input type="email" placeholder="Email" required style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #ccc' }} />
-                        <textarea placeholder="Message" rows="5" required style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #ccc' }}></textarea>
-                        <button type="submit" style={{ backgroundColor: '#1E40AF', color: '#FFFFFF', padding: '0.8rem', border: 'none', borderRadius: '50px', fontWeight: '600', cursor: 'pointer' }}>
-                            Envoyer
-                        </button>
-                    </form>
+                <Badges />
+            </section>
+            <div className="section-divider"></div>
+            {/* Projects Section */}
+            <section id="projects" className="projects-section">
+                <div className='projects-container'>
+                    <h2 class="section-title">Projects</h2>
+                    <Projects />
                 </div>
             </section>
+
+
+
+
+            {/* Skills */}
+            <section id="skills" className="skills-section">
+                <h2 class="section-title">Kenntnisse</h2>
+                <Skills />
+            </section>
+
+
+            <div className="section-divider"></div>
+
+
+
+            <div className="section-divider"></div>
+
+            {/* Contact */}
+            <section id="contact" className="contact-section">
+                <h2 class="section-title">Kontakt</h2>
+                <Contact />
+            </section>
+
+            <Footer />
         </>
     );
 }
