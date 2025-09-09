@@ -3,45 +3,56 @@ name: Deployment
 on: push
 
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
-        steps:
+  deploy:
+    runs-on: ubuntu-latest
 
-            - name: checkout
-              uses: actions/checkout@v5
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
 
-            - name: ssh setup
-              run: | 
-                mkdir -p ~/.ssh
-                echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/meinPrivateKey
-                chmod 400 ~/.ssh/meinPrivateKey
-                ssh-keyscan -H ${{secrets.EC2_IP}}  >> ~/.ssh/known_hosts
-                
-            - name: frontend build
-              run: |
-                cd frontend
-                npm install
-                npm run build
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/meinPrivateKey
+          chmod 400 ~/.ssh/meinPrivateKey
+          ssh-keyscan -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts
 
-            - name: backend build
-              run: |
-                cd backend
-                npm install
-             
-              
+      - name: Ensure Docker is installed on EC2
+        run: |
+          ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+            if ! command -v docker &> /dev/null; then
+              echo "Installing Docker..."
+              sudo apt update
+              sudo apt install -y docker.io
+              sudo usermod -aG docker ubuntu
+            else
+              echo "Docker already installed."
+            fi
+          EOF
 
-            - name: copy files 
-              run: |
-                scp -i ~/.ssh/meinPrivateKey -r frontend/build ubuntu@${{ secrets.EC2_IP}}:/home/ubuntu/
-                ssh -i ~/.ssh/meinPrivateKey ubuntu@${{secrets.EC2_IP}} "sudo cp -r /home/ubuntu/ /var/www/html/"  
-                
-                scp -i ~/.ssh/meinPrivateKey -r backend ubuntu@${{ secrets.EC2_IP}}:/home/ubuntu/
-                ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_IP}} << 'EOF'
-                cd /home/ubuntu/backend
-                npm install
-                # Start or restart with PM2
-                if ! command -v pm2 &> /dev/null; then
-                sudo npm install -g pm2
-                fi
-                pm2 startOrRestart ecosystem.config.js || pm2 start server.js --name backend
-                EOF
+      - name: Copy backend and frontend to EC2
+        run: |
+          scp -i ~/.ssh/meinPrivateKey -r backend ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
+          scp -i ~/.ssh/meinPrivateKey -r frontend ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
+
+      - name: Build and run Docker containers on EC2
+        run: |
+          ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+            cd /home/ubuntu
+
+            # Stop and remove existing containers
+            docker stop backend || true && docker rm backend || true
+            docker stop frontend || true && docker rm frontend || true
+
+            # Build backend image and run container
+            cd backend
+            docker build -t backend-image .
+            docker run -d --name backend -p 5000:5000 backend-image
+            cd ..
+
+            # Build frontend image and run container
+            cd frontend
+            docker build -t frontend-image .
+            docker run -d --name frontend -p 80:3000 frontend-image
+            cd ..
+          EOF
