@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v5
 
       - name: Set up SSH
@@ -17,42 +17,38 @@ jobs:
           chmod 400 ~/.ssh/meinPrivateKey
           ssh-keyscan -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts
 
-      - name: Ensure Docker is installed on EC2
+      - name: Install Docker on EC2 (if needed)
         run: |
           ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_IP }} << 'EOF'
             if ! command -v docker &> /dev/null; then
-              echo "Installing Docker..."
               sudo apt update
               sudo apt install -y docker.io
+              sudo systemctl start docker
+              sudo systemctl enable docker
               sudo usermod -aG docker ubuntu
-            else
-              echo "Docker already installed."
             fi
           EOF
 
-      - name: Copy backend and frontend to EC2
+      - name: Build frontend
         run: |
-          scp -i ~/.ssh/meinPrivateKey -r backend ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
-          scp -i ~/.ssh/meinPrivateKey -r frontend ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
+          cd frontend
+          npm install
+          npm run build
 
-      - name: Build and run Docker containers on EC2
+      - name: Copy frontend to EC2
         run: |
+          scp -i ~/.ssh/meinPrivateKey -r frontend/build ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/frontend_build/
           ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_IP }} << 'EOF'
-            cd /home/ubuntu
+            sudo rm -rf /var/www/html/*
+            sudo cp -r /home/ubuntu/frontend_build/* /var/www/html/
+          EOF
 
-            # Stop and remove existing containers
-            docker stop backend || true && docker rm backend || true
-            docker stop frontend || true && docker rm frontend || true
-
-            # Build backend image and run container
-            cd backend
-            docker build -t backend-image .
-            docker run -d --name backend -p 5000:5000 backend-image
-            cd ..
-
-            # Build frontend image and run container
-            cd frontend
-            docker build -t frontend-image .
-            docker run -d --name frontend -p 80:3000 frontend-image
-            cd ..
+      - name: Copy backend to EC2 and deploy with Docker
+        run: |
+          scp -i ~/.ssh/meinPrivateKey -r backend ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/backend/
+          ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+            cd /home/ubuntu/backend
+            docker build -t backend-app .
+            docker rm -f backend-container || true
+            docker run -d --name backend-container -p 5000:5000 backend-app
           EOF
