@@ -15,7 +15,7 @@ jobs:
                 mkdir -p ~/.ssh
                 echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/meinPrivateKey
                 chmod 400 ~/.ssh/meinPrivateKey
-                ssh-keyscan -H ${{secrets.EC2_TESTING_IP}}  >> ~/.ssh/known_hosts
+                ssh-keyscan -H ${{secrets.EC2_IP}}  >> ~/.ssh/known_hosts
                 
             - name: frontend build
               run: |
@@ -31,11 +31,11 @@ jobs:
 
             - name: copy files 
               run: |
-                scp -i ~/.ssh/meinPrivateKey -r frontend/build ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
+                scp -i ~/.ssh/meinPrivateKey -r frontend/build ubuntu@${{ secrets.EC2_IP}}:/home/ubuntu/
                 ssh -i ~/.ssh/meinPrivateKey ubuntu@${{secrets.EC2_IP}} "sudo cp /home/ubuntu/ /var/www/html/"  
                 
-                scp -i ~/.ssh/meinPrivateKey -r backend ubuntu@${{ secrets.EC2_TESTING_IP }}:/home/ubuntu/
-                ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_TESTING_IP }} << 'EOF'
+                scp -i ~/.ssh/meinPrivateKey -r backend ubuntu@${{ secrets.EC2_IP}}:/home/ubuntu/
+                ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_IP}} << 'EOF'
                 cd /home/ubuntu/backend
                 npm install
                 # Start or restart with PM2
