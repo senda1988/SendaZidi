@@ -12,6 +12,7 @@ import Badges from '../components/Badges';
 import Skills from "../components/Skills";
 import Contact from "../components/Contact";
 import Footer from '../components/Footer';
+import Typewriter from '../components/Typewriter';
 
 
 export default function Home() {
@@ -28,10 +29,14 @@ export default function Home() {
 
                     <div className="home-text">
                         <p className="intro-small">Hallo, ich bin</p>
-                        <h1 className="intro-title">Senda Zidi</h1>
+                        <h1 className="intro-title"> <Typewriter text="Senda Zidi" speed={70} /></h1>
                         <h2 className="intro-subtitle">
-                            <span style={{ color: '#fff', fontWeight: '200' }} >Und ich bin</span> <span className="highlight">junior Cloud engineer</span>
+                            <span style={{ color: '#fff', fontWeight: '200' }}>Und ich bin </span>
+                            <span className="highlight">
+                                <Typewriter text="Junior Cloud engineer" speed={100} />
+                            </span>
                         </h2>
+
                         <p className="intro-desc">
                             I support the design and automation of cloud infrastructures and CI/CD pipelines to deliver efficient, scalable, and reliable applications.
                         </p>

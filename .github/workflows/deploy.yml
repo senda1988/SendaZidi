@@ -1,0 +1,46 @@
+name: Deployment
+
+on: push
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+
+            - name: checkout
+              uses: actions/checkout@v5
+
+            - name: ssh setup
+              run: | 
+                mkdir -p ~/.ssh
+                echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/meinPrivateKey
+                chmod 400 ~/.ssh/meinPrivateKey
+                ssh-keyscan -H ${{secrets.EC2_TESTING_IP}}  >> ~/.ssh/known_hosts
+                
+            - name: frontend build
+              run: |
+                cd frontend
+                npm install
+                npm run build
+
+            - name: backend build
+              run: |
+                cd backend
+                npm install
+                npm run build
+
+            - name: copy files 
+              run: |
+                scp -i ~/.ssh/meinPrivateKey -r frontend/build ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
+                ssh -i ~/.ssh/meinPrivateKey ubuntu@${{secrets.EC2_IP}} "sudo cp /home/ubuntu/ /var/www/html/"  
+                
+                scp -i ~/.ssh/meinPrivateKey -r backend ubuntu@${{ secrets.EC2_TESTING_IP }}:/home/ubuntu/
+                ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_TESTING_IP }} << 'EOF'
+                cd /home/ubuntu/backend
+                npm install
+                # Start or restart with PM2
+                if ! command -v pm2 &> /dev/null; then
+                sudo npm install -g pm2
+                fi
+                pm2 startOrRestart ecosystem.config.js || pm2 start server.js --name backend
+                EOF
