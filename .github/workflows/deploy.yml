@@ -37,11 +37,13 @@ jobs:
 
       - name: Copy frontend to EC2
         run: |
-          scp -i ~/.ssh/meinPrivateKey -r frontend/build ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/frontend_build/
+          ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_IP }} "mkdir -p /home/ubuntu/frontend_build"
+          scp -i ~/.ssh/meinPrivateKey -r frontend/build/* ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/frontend_build/
           ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_IP }} << 'EOF'
-            sudo rm -rf /var/www/html/*
-            sudo cp -r /home/ubuntu/frontend_build/* /var/www/html/
+              sudo rm -rf /var/www/html/*
+              sudo cp -r /home/ubuntu/frontend_build/* /var/www/html/
           EOF
+
 
       - name: Copy backend to EC2 and deploy with Docker
         run: |
