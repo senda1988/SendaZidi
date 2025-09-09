@@ -1,6 +1,6 @@
 // src/components/Skills.js
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { skillData } from "../data/skillData";
 import SkillCategoryCloud from "./SkillCategoryCloud";
 

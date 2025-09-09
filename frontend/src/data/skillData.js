@@ -4,7 +4,6 @@ import CssIcon from "@mui/icons-material/Css";
 import JavascriptIcon from "@mui/icons-material/Javascript";
 import TerminalIcon from "@mui/icons-material/Terminal";
 import IntegrationInstructionsIcon from "@mui/icons-material/IntegrationInstructions";
-import StorageIcon from "@mui/icons-material/Storage";
 import CloudIcon from "@mui/icons-material/Cloud";
 import CodeIcon from "@mui/icons-material/Code";
 import SettingsIcon from "@mui/icons-material/Settings";
