@@ -33,7 +33,7 @@ jobs:
             - name: copy files 
               run: |
                 scp -i ~/.ssh/meinPrivateKey -r frontend/build ubuntu@${{ secrets.EC2_IP}}:/home/ubuntu/
-                ssh -i ~/.ssh/meinPrivateKey ubuntu@${{secrets.EC2_IP}} "sudo cp /home/ubuntu/ /var/www/html/"  
+                ssh -i ~/.ssh/meinPrivateKey ubuntu@${{secrets.EC2_IP}} "sudo cp -r /home/ubuntu/ /var/www/html/"  
                 
                 scp -i ~/.ssh/meinPrivateKey -r backend ubuntu@${{ secrets.EC2_IP}}:/home/ubuntu/
                 ssh -i ~/.ssh/meinPrivateKey ubuntu@${{ secrets.EC2_IP}} << 'EOF'
